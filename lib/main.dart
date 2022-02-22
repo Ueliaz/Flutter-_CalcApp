@@ -25,31 +25,75 @@ class CalcApp extends StatefulWidget {
 }
 
 class _CalcAppState extends State<CalcApp> {
-  String equation = "0";
+   String equation = "0";
   String result = "0";
   String expression = "";
-  double equationFontSize = 38;
-  double resultFontSize = 48;
+  double equationFontSize = 40;
+  double resultFontSize = 35;
   void calcBackend(String buttonText) {
     setState(() {
+      // if (buttonText == "C") {
+      //   equation = "0";
+      //   result = "0";
+      // equationFontSize = 38;
+      // resultFontSize = 48;
+      // } else if (buttonText == "CE") {
+      //   equationFontSize = 48;
+      //   resultFontSize = 38;
+      //   equation = equation.substring(0, equation.length - 1);
+      //   if (equation == "") {
+      //     equation = "0";
+      //   }
+      // } else if (buttonText == "=") {
+      //   equationFontSize = 38;
+      //   resultFontSize = 48;
+      //   expression = equation;
+      //   expression = expression.replaceAll("×", "*");
+      //   expression = expression.replaceAll("÷", "/");
+      //   try {
+      //     Parser p = Parser();
+      //     Expression exp = p.parse(expression);
+
+      //     ContextModel cm = ContextModel();
+      //     result = '${exp.evaluate(EvaluationType.REAL, cm)}';
+      //   } catch (e) {
+      //     result = "error";
+      //   }
+      // } else {
+      //   equationFontSize = 48;
+      //   resultFontSize = 38;
+      //   if (equation == "0") {
+      //     equation = buttonText;
+      //   } else {
+      //     equation = equation + buttonText;
+      //   }
+      // }
       if (buttonText == "C") {
         equation = "0";
         result = "0";
-        equationFontSize = 38;
-        resultFontSize = 48;
       } else if (buttonText == "CE") {
-        equationFontSize = 48;
-        resultFontSize = 38;
         equation = equation.substring(0, equation.length - 1);
         if (equation == "") {
           equation = "0";
         }
-      } else if (buttonText == "=") {
-        equationFontSize = 38;
-        resultFontSize = 48;
+      } else if (buttonText == "1" ||
+          buttonText == "2" ||
+          buttonText == "3" ||
+          buttonText == "4" ||
+          buttonText == "5" ||
+          buttonText == "6" ||
+          buttonText == "7" ||
+          buttonText == "8" ||
+          buttonText == "9") {
+        if (equation == "0") {
+          equation = buttonText;
+        } else {
+          equation = equation + buttonText;
+        }
         expression = equation;
         expression = expression.replaceAll("×", "*");
         expression = expression.replaceAll("÷", "/");
+
         try {
           Parser p = Parser();
           Expression exp = p.parse(expression);
@@ -59,14 +103,24 @@ class _CalcAppState extends State<CalcApp> {
         } catch (e) {
           result = "error";
         }
-      } else {
-        equationFontSize = 48;
-        resultFontSize = 38;
-        if (equation == "0") {
-          equation = buttonText;
-        } else {
-          equation = equation + buttonText;
+      } else if (buttonText == "=") {
+        expression = equation;
+        expression = expression.replaceAll("×", "*");
+        expression = expression.replaceAll("÷", "/");
+        try {
+          Parser p = Parser();
+          Expression exp = p.parse(expression);
+
+          ContextModel cm = ContextModel();
+          equation = '${exp.evaluate(EvaluationType.REAL, cm)}';
+          result = "0";
+        } catch (e) {
+          result = "error";
         }
+      } else if (equation == "0") {
+        equation = buttonText;
+      } else {
+        equation = equation + buttonText;
       }
     });
   }
@@ -100,7 +154,6 @@ class _CalcAppState extends State<CalcApp> {
       ]),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,10 +187,10 @@ class _CalcAppState extends State<CalcApp> {
             padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
             child: Text(
               result,
-              style: TextStyle(fontSize: resultFontSize, color: Colors.white),
+              style: TextStyle(fontSize: resultFontSize, color: Colors.white30),
             ),
           ),
-
+            const Expanded(child: Divider()),
           // const SizedBox(height: 70),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
